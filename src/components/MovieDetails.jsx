@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useKey } from "../hooks/useKey";
 import Button from "./common/Button";
 import ErrorMessage from "./common/ErrorMessage";
 import Loader from "./common/Loader";
@@ -16,6 +17,8 @@ export default function MovieDetails({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [userRating, setUserRating] = useState(0);
+  const countRef = useRef(0);
+
   const isRated = watchedMovies
     .map((movie) => movie.imdbID)
     .includes(selectedId);
@@ -37,16 +40,7 @@ export default function MovieDetails({
     Director: director,
   } = details;
 
-  useEffect(function () {
-    const callback = function (e) {
-      if (e.code === "Escape") onCloseDetails();
-    };
-    document.addEventListener("keydown", callback);
-
-    return () => {
-      document.removeEventListener("keydown", callback);
-    };
-  }, []);
+  useKey("keydown", onCloseDetails);
 
   useEffect(
     function () {
@@ -86,6 +80,13 @@ export default function MovieDetails({
   const handleSetRating = function (rating) {
     setUserRating(rating);
   };
+
+  useEffect(
+    function () {
+      if (userRating) countRef.current++;
+    },
+    [userRating]
+  );
 
   const handleAddMovie = function () {
     if (!userRating) return;
