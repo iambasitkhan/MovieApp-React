@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getMovies, getWatchedMovie } from "./data/TempMovieData";
 
 import MainContainer from "./components/MainContainer";
 import NavBar from "./components/NavBar";
 import Logo from "./components/Logo";
-import Input from "./components/common/Input";
+import SearchInput from "./components/common/SearchInput";
 import NumMovies from "./components/NumMovies";
 import Box from "./components/common/Box";
 import MovieList from "./components/MovieList";
@@ -100,12 +100,7 @@ export default function App() {
     <>
       <NavBar>
         <Logo />
-        <Input
-          type="search"
-          className="search"
-          value={searchQuery}
-          onChange={setSearchQuery}
-        />
+        <SearchInput value={searchQuery} onChange={setSearchQuery} />
         <NumMovies movies={movies} />
       </NavBar>
       <MainContainer>
